@@ -1,0 +1,1029 @@
+/* ================================================================
+   COSMO TRIPPIN' — Plain CSS stylesheet
+   Replaces Tailwind CSS v4 from the React/TypeScript version.
+   ================================================================ */
+
+/* ─── 1. GOOGLE FONTS ───────────────────────────────────────────── */
+/* (Loaded via <link> in index.html for cache efficiency)            */
+
+
+/* ─── 2. CSS CUSTOM PROPERTIES (DESIGN TOKENS) ──────────────────── */
+:root {
+  --pink:   #ff4f9a;
+  --yellow: #ffd04d;
+  --cyan:   #00e0ff;
+  --teal:   #2ed7c3;
+  --white:  #f8f8f8;
+  --void:   #07040f;
+  --deep:   #100a24;
+  --panel:  #150e2e;
+
+  --font-display: 'Press Start 2P', monospace;
+  --font-body:    'VT323', monospace;
+}
+
+
+/* ─── 3. RESET & BASE ────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--void);
+  color: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: none;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+body:hover {
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+
+img { display: block; }
+button { cursor: pointer; }
+p, h1, h2, h3 { margin: 0; }
+
+
+/* ─── 4. CRISP PIXEL RENDERING ───────────────────────────────────── */
+.pixel {
+  shape-rendering: crispEdges;
+  image-rendering: pixelated;
+}
+
+
+/* ─── 5. ANIMATIONS ─────────────────────────────────────────────── */
+@keyframes cosmo-blink {
+  0%, 60%   { opacity: 1; }
+  61%, 100% { opacity: 0.25; }
+}
+.animate-blink {
+  animation: cosmo-blink 1s steps(1) infinite;
+}
+
+@keyframes cosmo-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.animate-float {
+  animation: cosmo-float 3s ease-in-out infinite;
+}
+
+@keyframes cosmo-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+.animate-pulse {
+  animation: cosmo-pulse 2s ease-in-out infinite;
+}
+
+@keyframes cosmo-rise {
+  0%   { transform: translate(-50%, 0) scale(0.6); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translate(-50%, -60px) scale(1.15); opacity: 0; }
+}
+.animate-rise {
+  animation: cosmo-rise 0.9s steps(6) forwards;
+}
+
+@keyframes cosmo-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-spin      { animation: cosmo-spin 12s linear infinite; }
+.animate-spin-slow { animation: cosmo-spin 20s linear infinite; }
+
+@keyframes cosmo-twinkle {
+  0%, 100% { opacity: 0.25; }
+  50%      { opacity: 1; }
+}
+
+
+/* ─── 6. PIXEL TEXT OUTLINE (GAME OVER heading) ──────────────────── */
+.pixel-outline {
+  text-shadow:
+    2px 0 0 var(--void), -2px 0 0 var(--void),
+    0 2px 0 var(--void),  0 -2px 0 var(--void),
+    2px 2px 0 var(--void), -2px -2px 0 var(--void);
+}
+
+
+/* ─── 7. PIXEL PANEL (bordered game frame) ───────────────────────── */
+.pixel-panel {
+  position: relative;
+  background: var(--panel);
+  border: 3px solid var(--white);
+  box-shadow:
+    0 0 0 3px var(--void),
+    6px 6px 0 3px rgba(0,0,0,0.55);
+}
+
+
+/* ─── 8. PIXEL BUTTON (arcade-style) ─────────────────────────────── */
+.pixel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 3px solid var(--void);
+  font-family: var(--font-display);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  padding: 16px 24px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 0 #07040f, 4px 4px 0 3px #f8f8f8;
+  transition: transform 75ms;
+}
+.pixel-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+.pixel-btn-pink   { background: var(--pink);   color: var(--void); }
+.pixel-btn-cyan   { background: var(--cyan);   color: var(--void); }
+.pixel-btn-yellow { background: var(--yellow); color: var(--void); }
+
+
+/* ─── 9. STARFIELD ───────────────────────────────────────────────── */
+.starfield {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+.star-dot {
+  position: absolute;
+}
+
+
+/* ─── 10. NAVIGATION ─────────────────────────────────────────────── */
+.nav-container {
+  position: relative;
+  width: 100%;
+  background: transparent;
+  flex-shrink: 0;
+}
+.nav-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  image-rendering: pixelated;
+}
+.nav-zones {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+.nav-zone {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Mobile nav: always visible within its page section */
+.nav-mobile {
+  position: relative;
+  z-index: 40;
+  margin-top: auto;
+}
+
+/* Desktop footer nav: hidden on mobile, visible on ≥640px */
+.desktop-footer {
+  display: none;
+  flex-shrink: 0;
+}
+.desktop-footer.visible {
+  display: block;
+  padding: 12px 8px;
+}
+.nav-desktop {
+  max-width: 80rem; /* matches React's max-w-5xl */
+  margin: 0 auto;
+}
+
+/* Hide mobile nav on desktop */
+@media (min-width: 640px) {
+  .nav-mobile { display: none; }
+}
+
+
+/* ─── 11. APP WRAPPER & PAGE SYSTEM ──────────────────────────────── */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--void);
+  color: var(--white);
+}
+
+#main {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Pages are hidden by default; only the active page shows */
+.page {
+  display: none;
+  flex-direction: column;
+  min-height: 100%;
+}
+.page.active {
+  display: flex;
+}
+.page.hidden {
+  display: none !important;
+}
+
+
+/* ─── 12. HOME PAGE ───────────────────────────────────────────────── */
+.page-home {
+  /* Outer div uses flex-col to hold the centered section */
+  position: relative;
+  overflow: hidden;
+}
+
+.home-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  width: 100%;
+  max-width: 48rem;      /* 768px, matches React max-w-[48rem] */
+  margin: 0 auto;
+  height: 100dvh;
+  border: 3px solid var(--white);
+  background: rgba(7,4,15,0.9);
+  box-shadow: 4px 4px 0 #00e0ff;
+}
+@media (min-width: 640px) {
+  .page-home { padding: 1rem; }
+  .home-section {
+    height: calc(100dvh - 2rem);
+    border-width: 4px;
+  }
+}
+
+/* Decorative assets — absolute positioned inside home-section */
+.home-deco {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+}
+.home-deco-blackhole {
+  left: -5%; top: 5%;
+  width: 208px; /* w-52 */
+  opacity: 0.9;
+}
+.home-deco-ufo {
+  right: -8%; top: 4%;
+  width: 176px; /* w-44 */
+  transform: rotate(-28deg);
+  opacity: 0.95;
+}
+.home-deco-asteroid-lg {
+  left: 2%; top: 56%;
+  width: 80px; /* w-20 */
+  opacity: 0.9;
+}
+.home-deco-asteroid-sm {
+  left: 23%; top: 63%;
+  width: 28px; /* w-7 */
+  opacity: 0.85;
+}
+.home-deco-star-1 {
+  left: 59%; top: 40%;
+  z-index: 20;
+  width: 40px; /* w-10 */
+  opacity: 0.95;
+}
+.home-deco-star-2 {
+  right: 11%; top: 65%;
+  z-index: 20;
+  width: 20px; /* w-5 */
+  opacity: 0.8;
+}
+@media (min-width: 640px) {
+  .home-deco-blackhole  { width: 224px; }
+  .home-deco-ufo        { width: 256px; }
+  .home-deco-asteroid-lg { top: 42%; width: 128px; }
+  .home-deco-asteroid-sm { left: 14%; top: 52%; width: 48px; }
+  .home-deco-star-1     { left: 55%; top: 50%; width: 56px; }
+  .home-deco-star-2     { right: 10%; top: 58%; width: 32px; }
+}
+
+/* Home main content column */
+.home-content {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  padding-top: 12%;
+}
+@media (min-width: 640px) {
+  .home-content { padding-top: 2rem; }
+}
+
+.home-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 0.5rem;
+}
+@media (min-width: 640px) {
+  .home-logo-wrap { max-width: 360px; }
+}
+
+.home-logo {
+  width: 100%;
+  object-fit: contain;
+}
+
+.home-subtitle {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--yellow);
+}
+@media (min-width: 640px) {
+  .home-subtitle { font-size: 12px; }
+}
+
+.home-astronaut-wrap {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0 1.5rem;
+}
+
+.home-astronaut {
+  position: relative;
+  z-index: 20;
+  width: 192px; height: 192px; /* h-48 w-48 */
+  transform: rotate(-15deg);
+  object-fit: contain;
+  filter: drop-shadow(0 0 24px rgba(0,224,255,0.4));
+}
+@media (min-width: 640px) {
+  .home-astronaut { width: 256px; height: 256px; }
+}
+
+.home-buttons {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0 1.5rem 9rem;
+}
+@media (min-width: 640px) {
+  .home-buttons { gap: 1.25rem; padding-bottom: 13rem; }
+}
+
+.home-btn {
+  width: 100%;
+  max-width: 256px;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+@media (min-width: 640px) {
+  .home-btn { max-width: 288px; }
+}
+
+.home-btn-img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.home-tagline-img {
+  width: 192px; /* w-48 */
+  object-fit: contain;
+  margin-top: 0.75rem;
+}
+@media (min-width: 640px) {
+  .home-tagline-img { width: 224px; margin-top: 0.5rem; }
+}
+
+/* Planet surface — pinned above nav at bottom of section */
+.home-planet {
+  position: absolute;
+  bottom: 52px;  /* above the nav bar */
+  left: 0; right: 0;
+  z-index: 10;
+  width: 100%;
+  object-fit: contain;
+  object-position: bottom;
+}
+@media (min-width: 640px) {
+  .home-planet { bottom: 0; }
+}
+
+
+/* ─── 13. GAME PAGE ───────────────────────────────────────────────── */
+.page-game {
+  position: relative;
+}
+
+/* On desktop the game must fill 100% of the main area height */
+@media (min-width: 1024px) {
+  .page-game { height: 100%; }
+}
+
+/* Outer game div: flex column, grows to fill available height */
+.game-outer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+@media (min-width: 1024px) {
+  .game-outer { height: 100%; }
+}
+
+/* Stage wrapper: centers game panel on desktop, scrolls on mobile */
+.game-stage-wrapper {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 8px;
+}
+@media (min-width: 640px) {
+  .game-stage-wrapper { padding: 16px; }
+}
+@media (min-width: 1024px) {
+  /* JS sets position: absolute, top, left, width, height for centering */
+  .game-stage-wrapper {
+    padding: 0;
+  }
+}
+
+/* The bordered game frame */
+.game-panel {
+  overflow: hidden;
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .game-panel {
+    /* JS applies transform: scale(), and sets: top:-155px, right:0, bottom:0, left:-155px */
+    position: absolute;
+    width: 36rem; /* 576px — matches React lg:w-[36rem] */
+  }
+}
+
+/* ── HUD ────────────────────────────────────────────────────────── */
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  border-bottom: 3px solid rgba(248,248,248,0.25);
+  background: rgba(7,4,15,0.6);
+  padding: 6px 12px;
+}
+.hud-left  { }
+.hud-right { text-align: right; }
+
+.hud-label {
+  font-family: var(--font-display);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.hud-label-pink   { color: var(--pink); }
+.hud-label-yellow { color: var(--yellow); }
+.hud-label-cyan   { color: var(--cyan); }
+
+.hud-value {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--white);
+}
+.hud-speed {
+  font-family: var(--font-display);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+.hud-lives {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+.heart-icon {
+  width: 16px; height: 16px;
+  image-rendering: pixelated;
+}
+.heart-lost-x {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: 10px;
+  line-height: 1;
+  color: var(--white);
+  pointer-events: none;
+}
+.heart-slot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px; height: 16px;
+}
+
+/* ── Game Track ─────────────────────────────────────────────────── */
+.game-track {
+  position: relative;
+  width: 100%;
+  background: var(--void);
+  /* Desktop: fixed clamp height */
+  height: clamp(260px, 48vh, 560px);
+}
+/* Mobile (<1024px): aspect-ratio drives height instead */
+@media (max-width: 1023px) {
+  .game-track {
+    aspect-ratio: 1145 / 1374;
+    height: auto;
+  }
+}
+
+.track-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ── Entity wrappers ─────────────────────────────────────────────── */
+.entity-wrapper {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+.entity-img {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+.player-img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+}
+
+/* ── Track arrow buttons ─────────────────────────────────────────── */
+.track-arrow {
+  position: absolute;
+  bottom: 12px;
+  z-index: 10;
+  width: 48px; height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--void);
+  background: rgba(21,14,46,0.9);
+  cursor: pointer;
+  box-shadow: 3px 3px 0 0 #07040f;
+  padding: 0;
+}
+.track-arrow-left  { left: 12px; }
+.track-arrow-right { right: 12px; }
+.track-arrow-img   { width: 24px; height: 24px; object-fit: contain; }
+.arrow-flip { transform: scaleX(-1); }
+
+/* ── Game overlays (Ready / Game Over) ───────────────────────────── */
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: rgba(7,4,15,0.8);
+  padding: 16px;
+}
+.overlay-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+}
+.overlay-body {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: rgba(248,248,248,0.8);
+  text-align: center;
+  max-width: 260px;
+  line-height: 1.4;
+}
+.overlay-btn { padding: 16px 24px; }
+
+/* Game Over score card */
+.gameover-card {
+  width: 256px;
+  max-width: 100%;
+  padding: 16px;
+  text-align: center;
+  background: #1a1330;
+}
+.gameover-score,
+.gameover-best {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--white);
+  margin: 4px 0 8px;
+}
+.gameover-best { color: var(--yellow); }
+.gameover-divider {
+  border: none;
+  border-bottom: 2px dashed rgba(248,248,248,0.25);
+  margin: 12px 0;
+}
+.gameover-newbest {
+  font-family: var(--font-display);
+  font-size: 9px;
+  color: var(--cyan);
+  margin-top: 8px;
+}
+
+/* ── Toast notifications ("+100", "HIT!") ────────────────────────── */
+.toast {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  font-family: var(--font-display);
+  font-size: 14px;
+  text-shadow: 2px 2px 0 #07040f;
+  transform: translate(-50%, 0);
+  white-space: nowrap;
+}
+
+
+/* ─── 14. HOW TO PLAY PAGE ────────────────────────────────────────── */
+.page-howto {
+  position: relative;
+  overflow-x: hidden;
+  background: #05030c;
+}
+
+/* Fixed cyan border around the whole viewport on HTP page */
+.howto-border-frame {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  border: 2px solid var(--cyan);
+}
+
+/* Sparkle decorations scattered around the page */
+.sparkle {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Scrollable content column */
+.howto-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 20px 16px 24px;
+}
+@media (min-width: 640px) {
+  .howto-content { padding: 24px; }
+}
+
+/* ── Header ───────────────────────────────────────────────────────── */
+.howto-header {
+  position: relative;
+  margin-bottom: 1rem;
+}
+.howto-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.howto-logo {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+@media (min-width: 640px) {
+  .howto-logo { height: 56px; }
+}
+.howto-insert-coin {
+  font-family: var(--font-display);
+  font-size: 8px;
+  color: var(--yellow);
+}
+@media (min-width: 640px) {
+  .howto-insert-coin { font-size: 9px; }
+}
+
+/* Black hole decoration — top right corner */
+.howto-blackhole-deco {
+  position: absolute;
+  top: -4px; right: -8px;
+  width: 64px; height: 64px;
+  object-fit: contain;
+  opacity: 0.9;
+  pointer-events: none;
+}
+@media (min-width: 640px) {
+  .howto-blackhole-deco { width: 80px; height: 80px; }
+}
+
+/* HOW TO PLAY title pill */
+.howto-title-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  border-radius: 14px;
+  border: 3px solid var(--cyan);
+  background: var(--void);
+  padding: 10px 24px;
+  box-shadow: 0 0 16px rgba(0,224,255,0.33);
+}
+.howto-title-text {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  color: var(--white);
+}
+@media (min-width: 640px) {
+  .howto-title-text { font-size: 15px; }
+}
+
+/* ── Instruction panels ────────────────────────────────────────────── */
+.howto-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.howto-panel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 12px;
+  border-width: 2px;
+  border-style: solid;
+  background: #06040e;
+  padding: 12px;
+}
+.border-cyan { border-color: var(--cyan); }
+.border-pink { border-color: var(--pink); }
+
+/* Icon area (left side of each panel) */
+.howto-panel-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 80px;
+  gap: 4px;
+}
+
+.howto-panel-text { flex: 1; min-width: 0; }
+
+.howto-row-title {
+  font-family: var(--font-display);
+  font-size: 10px;
+}
+@media (min-width: 640px) {
+  .howto-row-title { font-size: 11px; }
+}
+
+.howto-row-body {
+  font-family: var(--font-display);
+  font-size: 7px;
+  line-height: 2;
+  color: rgba(248,248,248,0.85);
+  margin-top: 6px;
+}
+@media (min-width: 640px) {
+  .howto-row-body { font-size: 8px; }
+}
+
+/* Color helpers */
+.color-cyan   { color: var(--cyan); }
+.color-pink   { color: var(--pink); }
+.color-yellow { color: var(--yellow); }
+.color-white  { color: var(--white); }
+.text-yellow  { color: var(--yellow); }
+.text-cyan    { color: var(--cyan); }
+
+/* MOVE section: arrows */
+.howto-icon-row { flex-direction: row; gap: 4px; }
+.howto-icon-sm {
+  width: 32px; height: 32px;
+  object-fit: contain;
+}
+.howto-arrow {
+  width: 40px; height: 40px;
+  object-fit: contain;
+}
+.arrow-pink {
+  filter: brightness(0) saturate(100%) invert(40%) sepia(90%)
+          saturate(800%) hue-rotate(290deg) brightness(120%);
+}
+.arrow-cyan {
+  filter: brightness(0) saturate(100%) invert(80%) sepia(100%)
+          saturate(400%) hue-rotate(155deg) brightness(115%);
+}
+
+/* COLLECT section: star + sparkles */
+.howto-star-wrap {
+  position: relative;
+}
+.howto-star {
+  width: 48px; height: 48px;
+  object-fit: contain;
+}
+.star-sparkle {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* SURVIVE section: three hearts */
+.howto-hearts {
+  flex-direction: row;
+  gap: 4px;
+}
+.howto-heart {
+  width: 28px; height: 28px;
+  flex-shrink: 0;
+}
+
+/* Controls panels row */
+.howto-controls-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.howto-controls-panel {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px;
+}
+
+/* Keyboard key caps */
+.howto-keys {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+.key-cap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px; height: 24px;
+  padding: 0 4px;
+  border: 2px solid rgba(248,248,248,0.6);
+  background: rgba(255,255,255,0.1);
+  font-family: var(--font-display);
+  font-size: 7px;
+  color: var(--white);
+  border-radius: 3px;
+}
+.key-or {
+  font-family: var(--font-display);
+  font-size: 6px;
+  color: rgba(248,248,248,0.5);
+}
+
+/* Tap icon (mobile controls) */
+.howto-tap-icon {
+  width: 40px; height: 44px;
+  margin: 4px 0;
+}
+
+/* Score & Speed: bar chart */
+.howto-barchart {
+  width: 48px; height: 48px;
+  flex-shrink: 0;
+}
+
+/* START GAME button */
+.howto-start-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 320px;
+  margin: 20px auto 0;
+  border-radius: 9999px;
+  border: 3px solid var(--pink);
+  background: var(--pink);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 13px;
+  padding: 14px 32px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #c03070, 0 0 12px rgba(255,79,154,0.33);
+  transition: transform 75ms, box-shadow 75ms;
+}
+.howto-start-btn:hover {
+  box-shadow: 0 4px 0 #c03070, 0 0 24px rgba(255,79,154,0.55);
+}
+.howto-start-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #c03070;
+}
+@media (min-width: 640px) {
+  .howto-start-btn { font-size: 14px; }
+}
+
+/* Bottom: moon + astronaut */
+.howto-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  position: relative;
+}
+.howto-astronaut {
+  position: relative;
+  z-index: 10;
+  width: 80px; height: 80px;
+  object-fit: contain;
+}
+@media (min-width: 640px) {
+  .howto-astronaut { width: 96px; height: 96px; }
+}
+
+/* Teal crater moon */
+.howto-moon {
+  position: relative;
+  width: 100%;
+  height: 112px;
+  margin-top: -16px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse at 50% 30%,
+    #1af5e0 0%, #00b8cc 25%, #006d80 55%, #003345 80%, #001820 100%
+  );
+  box-shadow: 0 -6px 32px rgba(0,224,255,0.33),
+              inset 0 8px 24px #003345;
+}
+@media (min-width: 640px) {
+  .howto-moon { height: 144px; }
+}
+
+/* Crater dots inside the moon */
+.crater {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #008899, #003344);
+  border: 1px solid rgba(0,170,187,0.27);
+  transform: translate(-50%, -50%);
+}
+
+/* Left-side planet decoration */
+.howto-planet-deco {
+  position: absolute;
+  left: -40px;
+  bottom: 30%;
+  width: 96px; height: 96px;
+  object-fit: contain;
+  opacity: 0.7;
+  pointer-events: none;
+}
+@media (min-width: 640px) {
+  .howto-planet-deco { width: 128px; height: 128px; }
+}
+
+
+/* ─── 15. UTILITY CLASSES ────────────────────────────────────────── */
+.hidden { display: none !important; }

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cosmo Trippin'</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <main id="main">
+
+      <!-- ═══════════════════════════════════════════════════
+           HOME PAGE
+           ═══════════════════════════════════════════════════ -->
+      <div id="page-home" class="page page-home active">
+
+        <!-- Outer starfield background -->
+        <div class="starfield" id="stars-home-outer" aria-hidden="true"></div>
+
+        <!-- Bordered home section (like the React pixel-panel section) -->
+        <section class="home-section">
+
+          <!-- Inner starfield -->
+          <div class="starfield" id="stars-home-inner" aria-hidden="true"></div>
+
+          <!-- Decorative: black hole upper-left -->
+          <img src="assets/cosmo_planet_exact.svg"
+               class="pixel home-deco home-deco-blackhole animate-pulse"
+               alt="" aria-hidden="true" />
+
+          <!-- Decorative: UFO upper-right -->
+          <img src="assets/ufo_final.png"
+               class="pixel home-deco home-deco-ufo"
+               alt="" aria-hidden="true" />
+
+          <!-- Decorative: large asteroid left side -->
+          <img src="assets/new_asteroid_ultra_thick_outline.svg"
+               class="pixel home-deco home-deco-asteroid-lg animate-spin"
+               alt="" aria-hidden="true" />
+
+          <!-- Decorative: small asteroid -->
+          <img src="assets/new_asteroid_ultra_thick_outline.svg"
+               class="pixel home-deco home-deco-asteroid-sm animate-spin-slow"
+               alt="" aria-hidden="true" />
+
+          <!-- Decorative: floating star near astronaut -->
+          <img src="assets/star_exact.svg"
+               class="pixel home-deco home-deco-star-1 animate-float"
+               alt="" aria-hidden="true" />
+
+          <!-- Decorative: small star lower-right -->
+          <img src="assets/star_exact.svg"
+               class="pixel home-deco home-deco-star-2 animate-pulse"
+               alt="" aria-hidden="true" />
+
+          <!-- Main content column -->
+          <div class="home-content">
+
+            <!-- Logo -->
+            <div class="home-logo-wrap">
+              <img src="assets/home_logo.svg"
+                   class="pixel home-logo"
+                   alt="Cosmo Trippin' Logo" />
+            </div>
+
+            <!-- Subtitle tagline -->
+            <p class="home-subtitle">DODGE &bull; COLLECT &bull; SURVIVE</p>
+
+            <!-- Central astronaut -->
+            <div class="home-astronaut-wrap">
+              <img src="assets/new_astronaut_exact.svg"
+                   class="pixel home-astronaut"
+                   alt="Cosmo the astronaut floating diagonally" />
+            </div>
+
+            <!-- Action buttons -->
+            <div class="home-buttons">
+              <button class="home-btn" id="btn-home-start" aria-label="Start Game">
+                <img src="assets/start_game_button_exact.svg"
+                     class="pixel home-btn-img" alt="START GAME" />
+              </button>
+              <button class="home-btn" id="btn-home-howto" aria-label="How To Play">
+                <img src="assets/how_to_play_button_exact.svg"
+                     class="pixel home-btn-img" alt="HOW TO PLAY" />
+              </button>
+              <img src="assets/small_astronaut_big_universe_cyan.svg"
+                   class="pixel home-tagline-img"
+                   alt="A SMALL ASTRONAUT. A BIG UNIVERSE." />
+            </div>
+
+          </div>
+
+          <!-- Planet surface at the bottom of the section -->
+          <img src="assets/planet_home_page.svg"
+               class="pixel home-planet"
+               alt="" aria-hidden="true" />
+
+          <!-- Navigation bar (always visible on home, including desktop) -->
+          <nav class="nav-container" id="nav-home" aria-label="Main navigation">
+            <img class="nav-img" id="nav-home-img"
+                 src="assets/nav_home_active.svg" alt="Navigation" />
+            <div class="nav-zones">
+              <button class="nav-zone" data-nav="home" aria-label="Home" aria-current="page"></button>
+              <button class="nav-zone" data-nav="game" aria-label="Game"></button>
+              <button class="nav-zone" data-nav="howto" aria-label="How To Play"></button>
+            </div>
+          </nav>
+
+        </section>
+      </div><!-- /#page-home -->
+
+
+      <!-- ═══════════════════════════════════════════════════
+           GAME PAGE
+           ═══════════════════════════════════════════════════ -->
+      <div id="page-game" class="page page-game hidden">
+
+        <!-- Full-page starfield -->
+        <div class="starfield" id="stars-game" aria-hidden="true"></div>
+
+        <!-- Game area: contains stage wrapper on desktop, scrolls on mobile -->
+        <div class="game-outer" id="game-outer">
+
+          <!-- Stage wrapper: centers the panel on desktop via JS transform -->
+          <div class="game-stage-wrapper" id="game-stage-wrapper">
+
+            <!-- Game panel (the bordered frame with HUD + track) -->
+            <div class="pixel-panel game-panel" id="game-panel">
+
+              <!-- ── HUD ─────────────────────────────────── -->
+              <div class="hud">
+                <div class="hud-left">
+                  <p class="hud-label hud-label-pink">Score</p>
+                  <p class="hud-value" id="hud-score">00000</p>
+                  <div class="hud-lives" id="hud-lives" aria-label="3 lives remaining">
+                    <!-- Heart SVGs injected by JS -->
+                  </div>
+                </div>
+                <div class="hud-right">
+                  <p class="hud-label hud-label-yellow">Best</p>
+                  <p class="hud-value" id="hud-best">00000</p>
+                  <p class="hud-speed hud-label-cyan" id="hud-speed">Speed ×1.00</p>
+                </div>
+              </div>
+
+              <!-- ── Track ──────────────────────────────── -->
+              <div class="game-track" id="game-track">
+
+                <!-- Stars inside the track -->
+                <div class="starfield" id="stars-track" aria-hidden="true"></div>
+
+                <!-- Track perspective SVG background -->
+                <img src="assets/new_track.svg"
+                     class="pixel track-bg" alt="" aria-hidden="true" />
+
+                <!-- Player astronaut (position updated every frame by JS) -->
+                <div class="entity-wrapper" id="player-wrapper">
+                  <img src="assets/cosmo_astronaut.svg"
+                       class="pixel entity-img player-img animate-float"
+                       id="player-img" alt="Your astronaut" />
+                </div>
+
+                <!-- Mobile touch control: left arrow button -->
+                <button class="track-arrow track-arrow-left hidden"
+                        id="btn-track-left" aria-label="Move left">
+                  <img src="assets/new_arrow_left.svg"
+                       class="pixel track-arrow-img" alt="" />
+                </button>
+
+                <!-- Mobile touch control: right arrow button (flipped) -->
+                <button class="track-arrow track-arrow-right hidden"
+                        id="btn-track-right" aria-label="Move right">
+                  <img src="assets/new_arrow_left.svg"
+                       class="pixel track-arrow-img arrow-flip"
+                       style="filter: hue-rotate(213deg);" alt="" />
+                </button>
+
+                <!-- ── READY overlay ─────────────────── -->
+                <div class="game-overlay" id="overlay-ready">
+                  <p class="overlay-title" style="color: var(--cyan);">READY?</p>
+                  <p class="overlay-body">
+                    Dodge hazards, grab stars,<br>survive as long as you can.
+                  </p>
+                  <button class="pixel-btn pixel-btn-pink overlay-btn"
+                          id="btn-start-ready">
+                    &#9658; START GAME
+                  </button>
+                </div>
+
+                <!-- ── GAME OVER overlay ──────────────── -->
+                <div class="game-overlay hidden" id="overlay-gameover">
+                  <p class="overlay-title animate-blink pixel-outline"
+                     style="color: var(--pink); font-size: 24px;">
+                    GAME OVER
+                  </p>
+                  <div class="gameover-card pixel-panel">
+                    <p class="hud-label" style="color: rgba(248,248,248,0.7);">Final Score</p>
+                    <p class="gameover-score" id="gameover-score">00000</p>
+                    <div class="gameover-divider"></div>
+                    <p class="hud-label" style="color: rgba(248,248,248,0.7);">Best Score</p>
+                    <p class="gameover-best" id="gameover-best">00000</p>
+                    <p class="gameover-newbest hidden" id="gameover-newbest">&#9733; NEW BEST! &#9733;</p>
+                  </div>
+                  <button class="pixel-btn pixel-btn-yellow overlay-btn"
+                          id="btn-play-again">
+                    &#8635; PLAY AGAIN
+                  </button>
+                </div>
+
+              </div><!-- /#game-track -->
+            </div><!-- /.game-panel -->
+          </div><!-- /.game-stage-wrapper -->
+
+          <!-- Mobile-only navigation (hidden on desktop via CSS) -->
+          <nav class="nav-container nav-mobile" id="nav-game" aria-label="Main navigation">
+            <img class="nav-img" id="nav-game-img"
+                 src="assets/nav_game_active.svg" alt="Navigation" />
+            <div class="nav-zones">
+              <button class="nav-zone" data-nav="home" aria-label="Home"></button>
+              <button class="nav-zone" data-nav="game" aria-label="Game" aria-current="page"></button>
+              <button class="nav-zone" data-nav="howto" aria-label="How To Play"></button>
+            </div>
+          </nav>
+
+        </div><!-- /.game-outer -->
+      </div><!-- /#page-game -->
+
+
+      <!-- ═══════════════════════════════════════════════════
+           HOW TO PLAY PAGE
+           ═══════════════════════════════════════════════════ -->
+      <div id="page-howto" class="page page-howto hidden">
+
+        <!-- Thin cyan border frame (fixed overlay) -->
+        <div class="howto-border-frame" aria-hidden="true"></div>
+
+        <!-- Starfield background -->
+        <div class="starfield" id="stars-howto" aria-hidden="true"></div>
+
+        <!-- Scattered sparkle decorations (absolute) -->
+        <span class="sparkle" style="left:8%;top:7%;" aria-hidden="true">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path fill="#ff4f9a" d="M4 0h2v4h4v2h-4v4h-2v-4h-4v-2h4z"/></svg>
+        </span>
+        <span class="sparkle" style="left:40%;top:5%;" aria-hidden="true">
+          <svg width="8" height="8" viewBox="0 0 10 10"><path fill="#ffd04d" d="M4 0h2v4h4v2h-4v4h-2v-4h-4v-2h4z"/></svg>
+        </span>
+        <span class="sparkle" style="right:14%;top:12%;" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 10 10"><path fill="#ff4f9a" d="M4 0h2v4h4v2h-4v4h-2v-4h-4v-2h4z"/></svg>
+        </span>
+        <span class="sparkle" style="left:6%;top:28%;" aria-hidden="true">
+          <svg width="9" height="9" viewBox="0 0 10 10"><path fill="#ffd04d" d="M4 0h2v4h4v2h-4v4h-2v-4h-4v-2h4z"/></svg>
+        </span>
+        <span class="sparkle" style="right:8%;top:35%;" aria-hidden="true">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path fill="#ff4f9a" d="M4 0h2v4h4v2h-4v4h-2v-4h-4v-2h4z"/></svg>
+        </span>
+        <span class="sparkle" style="left:3%;top:50%;" aria-hidden="true">
+          <svg width="8" height="8" viewBox="0 0 10 10"><path fill="#00e0ff" d="M4 0h2v4h4v2h-4v4h-2v-4h-4v-2h4z"/></svg>
+        </span>
+        <span class="sparkle" style="right:5%;top:58%;" aria-hidden="true">
+          <svg width="11" height="11" viewBox="0 0 10 10"><path fill="#ffd04d" d="M4 0h2v4h4v2h-4v4h-2v-4h-4v-2h4z"/></svg>
+        </span>
+        <span class="sparkle" style="left:12%;top:68%;" aria-hidden="true">
+          <svg width="9" height="9" viewBox="0 0 10 10"><path fill="#ff4f9a" d="M4 0h2v4h4v2h-4v4h-2v-4h-4v-2h4z"/></svg>
+        </span>
+        <span class="sparkle" style="right:12%;top:75%;" aria-hidden="true">
+          <svg width="8" height="8" viewBox="0 0 10 10"><path fill="#ffd04d" d="M4 0h2v4h4v2h-4v4h-2v-4h-4v-2h4z"/></svg>
+        </span>
+
+        <!-- Scrollable content -->
+        <div class="howto-content">
+
+          <!-- ── Header row: logo + INSERT COIN ── -->
+          <div class="howto-header">
+            <div class="howto-header-top">
+              <img src="assets/home_logo.svg"
+                   class="pixel howto-logo" alt="Cosmo Trippin'" />
+              <span class="howto-insert-coin animate-blink">INSERT COIN</span>
+            </div>
+            <!-- Black hole corner decoration -->
+            <img src="assets/cosmo_black_hole_exact.svg"
+                 class="pixel howto-blackhole-deco" alt="" aria-hidden="true" />
+            <!-- HOW TO PLAY title pill -->
+            <div class="howto-title-pill">
+              <h1 class="howto-title-text">HOW TO PLAY</h1>
+            </div>
+          </div>
+
+          <!-- ── Instruction panels ── -->
+          <div class="howto-panels">
+
+            <!-- MOVE -->
+            <div class="howto-panel border-cyan">
+              <div class="howto-panel-icon">
+                <img src="assets/new_arrow_left.svg"
+                     class="pixel howto-arrow arrow-pink" alt="Left" />
+                <img src="assets/new_arrow_left.svg"
+                     class="pixel howto-arrow arrow-cyan arrow-flip" alt="Right" />
+              </div>
+              <div class="howto-panel-text">
+                <h2 class="howto-row-title color-cyan">MOVE</h2>
+                <p class="howto-row-body">
+                  SWITCH BETWEEN THE LEFT<br>AND RIGHT LANES.
+                </p>
+              </div>
+            </div>
+
+            <!-- DODGE -->
+            <div class="howto-panel border-cyan">
+              <div class="howto-panel-icon howto-icon-row">
+                <img src="assets/new_asteroid_ultra_thick_outline.svg"
+                     class="pixel howto-icon-sm" alt="Asteroid" />
+                <img src="assets/cosmo_ufo_exact.svg"
+                     class="pixel howto-icon-sm" alt="UFO" />
+                <img src="assets/cosmo_black_hole_exact.svg"
+                     class="pixel howto-icon-sm" alt="Black hole" />
+              </div>
+              <div class="howto-panel-text">
+                <h2 class="howto-row-title color-pink">DODGE</h2>
+                <p class="howto-row-body">
+                  AVOID ASTEROIDS, UFOS<br>AND BLACK HOLES.<br>EACH HIT COSTS ONE LIFE.
+                </p>
+              </div>
+            </div>
+
+            <!-- COLLECT -->
+            <div class="howto-panel border-cyan">
+              <div class="howto-panel-icon howto-star-wrap">
+                <img src="assets/star_exact.svg"
+                     class="pixel howto-star" alt="Star" />
+                <!-- Small sparkle crosses around the star -->
+                <span class="star-sparkle" style="top:-2px;left:-2px;" aria-hidden="true">
+                  <svg width="8" height="8" viewBox="0 0 10 10"><path fill="#ffd04d" d="M4 0h2v4h4v2h-4v4h-2v-4h-4v-2h4z"/></svg>
+                </span>
+                <span class="star-sparkle" style="top:-2px;right:-2px;" aria-hidden="true">
+                  <svg width="7" height="7" viewBox="0 0 10 10"><path fill="#ffd04d" d="M4 0h2v4h4v2h-4v4h-2v-4h-4v-2h4z"/></svg>
+                </span>
+              </div>
+              <div class="howto-panel-text">
+                <h2 class="howto-row-title color-yellow">COLLECT</h2>
+                <p class="howto-row-body">
+                  GRAB YELLOW STARS.<br>EACH STAR IS WORTH 100 POINTS
+                </p>
+                <p class="howto-row-body color-yellow">AND MAKES THE GAME FASTER!</p>
+              </div>
+            </div>
+
+            <!-- SURVIVE -->
+            <div class="howto-panel border-cyan">
+              <div class="howto-panel-icon howto-hearts">
+                <!-- Three pink heart SVGs -->
+                <svg viewBox="0 0 20 18" class="howto-heart" aria-hidden="true">
+                  <path fill="#ff4f9a" d="M10 17C10 17 1 11 1 5C1 2.2 3.2 0 6 0C7.8 0 9.3.9 10 2.2C10.7.9 12.2 0 14 0C16.8 0 19 2.2 19 5C19 11 10 17 10 17Z"/>
+                </svg>
+                <svg viewBox="0 0 20 18" class="howto-heart" aria-hidden="true">
+                  <path fill="#ff4f9a" d="M10 17C10 17 1 11 1 5C1 2.2 3.2 0 6 0C7.8 0 9.3.9 10 2.2C10.7.9 12.2 0 14 0C16.8 0 19 2.2 19 5C19 11 10 17 10 17Z"/>
+                </svg>
+                <svg viewBox="0 0 20 18" class="howto-heart" aria-hidden="true">
+                  <path fill="#ff4f9a" d="M10 17C10 17 1 11 1 5C1 2.2 3.2 0 6 0C7.8 0 9.3.9 10 2.2C10.7.9 12.2 0 14 0C16.8 0 19 2.2 19 5C19 11 10 17 10 17Z"/>
+                </svg>
+              </div>
+              <div class="howto-panel-text">
+                <h2 class="howto-row-title color-pink">SURVIVE</h2>
+                <p class="howto-row-body">
+                  YOU HAVE THREE LIVES.<br>SURVIVE AS LONG AS YOU CAN &mdash;<br>
+                  THE GAME GETS FASTER AND HARDER<br>THE LONGER YOU LAST.
+                </p>
+              </div>
+            </div>
+
+            <!-- Controls: Desktop + Mobile side by side -->
+            <div class="howto-controls-row">
+
+              <!-- Desktop Controls -->
+              <div class="howto-panel border-pink howto-controls-panel">
+                <h3 class="howto-row-title color-pink">CONTROLS<br>(DESKTOP)</h3>
+                <div class="howto-keys">
+                  <span class="key-cap">A</span>
+                  <span class="key-cap">D</span>
+                  <span class="key-or">OR</span>
+                  <span class="key-cap">&#8592;</span>
+                  <span class="key-cap">&#8594;</span>
+                </div>
+                <p class="howto-row-body" style="font-size:6px;">
+                  USE <span class="color-yellow">A / D</span> OR
+                  <span class="color-yellow">&#8592; &#8594;</span>
+                  TO CHANGE LANES.
+                </p>
+              </div>
+
+              <!-- Mobile Controls -->
+              <div class="howto-panel border-cyan howto-controls-panel">
+                <h3 class="howto-row-title color-cyan">CONTROLS<br>(MOBILE)</h3>
+                <!-- Tap / pointer icon -->
+                <svg class="howto-tap-icon" viewBox="0 0 36 44" aria-hidden="true">
+                  <rect x="14" y="0"  width="8" height="22" rx="4" fill="#f8f8f8"/>
+                  <rect x="6"  y="16" width="8" height="20" rx="4" fill="#f8f8f8"/>
+                  <rect x="22" y="16" width="8" height="20" rx="4" fill="#f8f8f8"/>
+                  <rect x="6"  y="28" width="24" height="14" rx="4" fill="#f8f8f8"/>
+                  <circle cx="18" cy="38" r="5" fill="none" stroke="#00e0ff" stroke-width="2" opacity="0.8"/>
+                  <circle cx="18" cy="38" r="9" fill="none" stroke="#00e0ff" stroke-width="1.5" opacity="0.4"/>
+                </svg>
+                <p class="howto-row-body" style="font-size:6px;">
+                  TAP THE LEFT AND RIGHT<br>BUTTONS UNDER THE TRACK<br>
+                  TO CHANGE <span class="color-cyan">LANES.</span>
+                </p>
+              </div>
+
+            </div><!-- /.howto-controls-row -->
+
+            <!-- Score & Speed -->
+            <div class="howto-panel border-cyan">
+              <div class="howto-panel-icon">
+                <!-- Ascending bar chart -->
+                <svg class="howto-barchart" viewBox="0 0 44 40" aria-hidden="true">
+                  <rect x="1"  y="30" width="8" height="10" fill="#ff4f9a"/>
+                  <rect x="13" y="22" width="8" height="18" fill="#ff4f9a"/>
+                  <rect x="25" y="14" width="8" height="26" fill="#ff4f9a"/>
+                  <rect x="37" y="4"  width="7" height="36" fill="#ff4f9a"/>
+                </svg>
+              </div>
+              <div class="howto-panel-text">
+                <h3 class="howto-row-title color-yellow">SCORE &amp; SPEED</h3>
+                <p class="howto-row-body">
+                  EVERY STAR ADDS <span class="color-yellow">100 POINTS</span>
+                  TO YOUR SCORE.<br>THE TRACK SCROLLS FASTER OVER TIME,<br>
+                  SO HAZARDS ARRIVE QUICKER!
+                </p>
+              </div>
+            </div>
+
+          </div><!-- /.howto-panels -->
+
+          <!-- START GAME button -->
+          <button class="howto-start-btn" id="btn-howto-start">
+            START GAME &#9658;
+          </button>
+
+          <!-- Bottom: floating astronaut above moon surface -->
+          <div class="howto-bottom">
+            <img src="assets/cosmo_astronaut.svg"
+                 class="pixel howto-astronaut animate-float"
+                 alt="Cosmo Trippin' Astronaut" />
+            <div class="howto-moon">
+              <!-- Crater details rendered by CSS -->
+              <div class="crater" style="left:12%;top:35%;width:28px;height:28px;"></div>
+              <div class="crater" style="left:28%;top:55%;width:18px;height:18px;"></div>
+              <div class="crater" style="left:45%;top:30%;width:36px;height:36px;"></div>
+              <div class="crater" style="left:62%;top:50%;width:22px;height:22px;"></div>
+              <div class="crater" style="left:78%;top:38%;width:30px;height:30px;"></div>
+              <div class="crater" style="left:88%;top:58%;width:16px;height:16px;"></div>
+            </div>
+          </div>
+
+          <!-- Left-side planet decoration -->
+          <img src="assets/cosmo_planet_exact.svg"
+               class="pixel howto-planet-deco"
+               alt="" aria-hidden="true" />
+
+        </div><!-- /.howto-content -->
+
+        <!-- Mobile-only navigation -->
+        <nav class="nav-container nav-mobile" id="nav-howto" aria-label="Main navigation">
+          <img class="nav-img" id="nav-howto-img"
+               src="assets/nav_how_to_play_active.svg" alt="Navigation" />
+          <div class="nav-zones">
+            <button class="nav-zone" data-nav="home" aria-label="Home"></button>
+            <button class="nav-zone" data-nav="game" aria-label="Game"></button>
+            <button class="nav-zone" data-nav="howto" aria-label="How To Play" aria-current="page"></button>
+          </div>
+        </nav>
+
+      </div><!-- /#page-howto -->
+
+    </main><!-- /#main -->
+
+    <!-- Desktop-only footer nav (shown on Game + How To Play pages) -->
+    <footer id="desktop-footer" class="desktop-footer" aria-label="Main navigation">
+      <nav class="nav-container nav-desktop" id="nav-footer">
+        <img class="nav-img" id="nav-footer-img"
+             src="assets/nav_game_active.svg" alt="Navigation" />
+        <div class="nav-zones">
+          <button class="nav-zone" data-nav="home" aria-label="Home"></button>
+          <button class="nav-zone" data-nav="game" aria-label="Game"></button>
+          <button class="nav-zone" data-nav="howto" aria-label="How To Play"></button>
+        </div>
+      </nav>
+    </footer>
+
+  </div><!-- /.app-wrapper -->
+
+  <script src="js/game.js"></script>
+</body>
+</html>
