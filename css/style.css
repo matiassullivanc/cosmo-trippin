@@ -203,9 +203,17 @@ p, h1, h2, h3 { margin: 0; }
   display: none;
   flex-shrink: 0;
 }
+
 .desktop-footer.visible {
-  display: block;
+  display: none;
   padding: 12px 8px;
+}
+
+/* Show desktop footer only on desktop */
+@media (min-width: 640px) {
+  .desktop-footer.visible {
+    display: block;
+  }
 }
 .nav-desktop {
   max-width: 80rem; /* matches React's max-w-5xl */
