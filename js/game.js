@@ -936,16 +936,19 @@ function clearEntityDom() {
  * so it overlaps the stage wrapper edge-to-edge on all sides.
  */
 function measureDesktopStage() {
-  const panel    = document.getElementById('game-panel');
-  const outer    = document.getElementById('game-outer');
-  const wrapper  = document.getElementById('game-stage-wrapper');
+  const panel   = document.getElementById('game-panel');
+  const outer   = document.getElementById('game-outer');
+  const wrapper = document.getElementById('game-stage-wrapper');
 
-  if (!panel || !outer || window.innerWidth < 1024) {
+  if (!panel || !outer || !wrapper || window.innerWidth < 1024) {
     // Mobile: let CSS handle layout normally
-    panel.style.transform       = '';
-    panel.style.transformOrigin = '';
-    panel.style.position        = '';
-    panel.style.top = panel.style.right = panel.style.bottom = panel.style.left = '';
+    if (panel) {
+      panel.style.transform = '';
+      panel.style.transformOrigin = '';
+      panel.style.position = '';
+      panel.style.top = panel.style.right = panel.style.bottom = panel.style.left = '';
+    }
+
     wrapper.style.position = '';
     wrapper.style.top = wrapper.style.left = '';
     wrapper.style.transform = '';
@@ -953,32 +956,37 @@ function measureDesktopStage() {
     return;
   }
 
-  // Read natural panel size (without any active transform)
+  // Read the natural panel size without an active transform
   panel.style.transform = '';
   const panelW = panel.offsetWidth;
   const panelH = panel.offsetHeight;
 
-  const availW = outer.clientWidth  - 48;
+  if (!panelW || !panelH) return;
+
+  // Available space inside the desktop game area
+  const availW = outer.clientWidth - 48;
   const availH = outer.clientHeight - 32;
-  const scale  = Math.min(1.6, availW / panelW, availH / panelH);
 
-  // Apply scaling and panel offset (matches original React visual editor values)
-  panel.style.position        = 'absolute';
+  // Scale the panel proportionally so the complete frame remains visible
+  const scale = Math.min(1.6, availW / panelW, availH / panelH);
+
+  // Center the panel without the old negative offsets
+  panel.style.position = 'absolute';
   panel.style.transformOrigin = 'top left';
-  panel.style.transform       = `scale(${scale})`;
-  panel.style.top    = '-155px';
-  panel.style.right  = '0px';
-  panel.style.bottom = '0px';
-  panel.style.left   = '-155px';
+  panel.style.transform = `scale(${scale})`;
+  panel.style.top = '0px';
+  panel.style.left = '0px';
+  panel.style.right = 'auto';
+  panel.style.bottom = 'auto';
 
-  // Size the wrapper to exactly contain the scaled panel
-  wrapper.style.position  = 'absolute';
-  wrapper.style.width     = (panelW * scale) + 'px';
-  wrapper.style.height    = (panelH * scale) + 'px';
+  // Size the wrapper to contain the scaled panel
+  wrapper.style.position = 'absolute';
+  wrapper.style.width = (panelW * scale) + 'px';
+  wrapper.style.height = (panelH * scale) + 'px';
 
-  // Center the wrapper in the outer container
-  wrapper.style.top       = '50%';
-  wrapper.style.left      = '50%';
+  // Center the wrapper in the available desktop area
+  wrapper.style.top = '50%';
+  wrapper.style.left = '50%';
   wrapper.style.transform = 'translate(-50%, -50%)';
 }
 
